@@ -1,0 +1,31 @@
+{
+  "name": "my-basic",
+  "description": "Webcomponent my-basic following open-wc recommendations",
+  "license": "MIT",
+  "author": "my-basic",
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "analyze": "cem analyze --litelement",
+    "start": "tsc && concurrently -k -r \"tsc --watch --preserveWatchOutput\" \"web-dev-server\""
+  },
+  "dependencies": {
+    "@vaadin/button": "^24.5.4",
+    "@vaadin/date-picker": "^24.5.4",
+    "@vaadin/form-layout": "^24.5.4",
+    "@vaadin/horizontal-layout": "^24.5.4",
+    "@vaadin/multi-select-combo-box": "^24.5.4",
+    "@vaadin/notification": "^24.5.4",
+    "@vaadin/password-field": "^24.5.4",
+    "@vaadin/text-field": "^24.5.4",
+    "lit": "^3.1.4"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.3",
+    "@web/dev-server": "^0.4.6",
+    "concurrently": "^8.2.2",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.3"
+  },
+  "customElements": "custom-elements.json"
+}
