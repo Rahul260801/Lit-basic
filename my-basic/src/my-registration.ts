@@ -12,8 +12,8 @@ import type { NotificationOpenedChangedEvent } from "@vaadin/notification";
 import type { TextField, TextFieldValidatedEvent } from "@vaadin/text-field";
 import "@vaadin/multi-select-combo-box";
 import { Notification } from '@vaadin/notification';
-import "@vaadin/dialog";
-import "@vaadin/grid";
+// import "@vaadin/dialog";
+// import "@vaadin/grid";
 
 
 @customElement("user-registration") /// Registering the custom element with 'user-registration' tag
