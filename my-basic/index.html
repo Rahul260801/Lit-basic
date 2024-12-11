@@ -17,11 +17,22 @@
       /* background-color:rgba(0, 0, 0, 0.644); */
       height: 100vh;
     
-      /* background-image: url('https://images.pexels.com/photos/26383088/pexels-photo-26383088/free-photo-of-view-of-the-mexico-city-skyline-at-sunset.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');;
+      background-image: url('https://media4.giphy.com/media/tVMT2gyDLIMzD41oL4/source.gif');
       background-position: center;
       background-size: cover; 
-      opacity: 0.9; */
+      opacity: 0.9;
       
+      
+    }
+    #cursor {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease-out;
       
     }
   </style>
@@ -32,12 +43,13 @@
   <!-- <my-basic></my-basic> -->
   <!-- <my-file></my-file> -->
    <!-- <my-pro></my-pro> -->
-   
+   <div id="cursor"></div>
     
      <user-registration></user-registration> 
       <!-- Use the custom element <user-registration></user-registration> -->
       <my-todo></my-todo>
-   
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
+
   <!-- <script type="module" src="./out-tsc/src/my-basic.js"></script>
   <script type="module" src="./out-tsc/src/my-file.js"></script>
   <script type="module" src="./out-tsc/src/my-registration.js"></script>

@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@vaadin/button": "^24.5.4",
+    "@vaadin/context-menu": "^24.5.5",
     "@vaadin/date-picker": "^24.5.4",
     "@vaadin/dialog": "^24.5.5",
+    "@vaadin/email-field": "^24.5.5",
     "@vaadin/form-layout": "^24.5.4",
     "@vaadin/grid": "^24.5.5",
     "@vaadin/horizontal-layout": "^24.5.4",
+    "@vaadin/icon": "^24.5.5",
+    "@vaadin/icons": "^24.5.5",
     "@vaadin/multi-select-combo-box": "^24.5.4",
     "@vaadin/notification": "^24.5.4",
     "@vaadin/password-field": "^24.5.4",
@@ -24,6 +28,7 @@
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "express": "^4.21.2",
+    "gsap": "^3.12.5",
     "lit": "^3.1.4",
     "pg": "^8.13.1"
   },
