@@ -21,6 +21,7 @@ import "@vaadin/dialog";
 import { dialogHeaderRenderer, dialogRenderer } from "@vaadin/dialog/lit.js";
 import "@vaadin/vertical-layout";
 import "@vaadin/email-field";
+import '@vaadin/combo-box';
 
 @customElement("user-registration")
 export class Registration extends LitElement {
@@ -30,24 +31,25 @@ export class Registration extends LitElement {
   @state() password: string = "";
   @state() dob: string = "";
   @state() phone: string = "";
-  @state() users: Array<any> = []; // Keeps the list of registered users fetched from the server.
+  @state() users: Array<any> = []; // Keeps the list of registered users fetched from the server.cd
   @state() dialogUserDetails: any = {}; // Single user object, assuming you want to hold one user
 
   @state() showAlert: boolean = false;
   @state() errorMsg: string = "";
   @state() notifyTheme: string = "";
-  @state() items: any = ["United States", "Canada", "Germany", "India"];
-  @state() selectedCountry: string[] = [];
+ // @state() items: any = ["United States", "Canada", "Germany", "India"];
+ @state() items: string[] = [];
+  @state() selectedCountry: string = "";
 
   @state() dialogOpened: boolean = false;
   @state() editBtnClicked: boolean = false;
-  @state() editedId : any;
+  @state() editedId: any;
   static styles = css`
     :host {
       display: flex;
-      flex-direction: row; /* Align items side by side */
-      justify-content: space-between; /* Add space between form and grid */
-      gap: 4px; /* Optional: spacing between the form and the grid */
+      flex-direction: row; 
+      justify-content: space-between; 
+      gap: 4px; 
       padding: 20px;
       box-sizing: border-box;
     }
@@ -88,7 +90,9 @@ export class Registration extends LitElement {
   connectedCallback() {
     super.connectedCallback(); //this method is called when the component is inserted into the DOM
     this.fetchUsers(); // Fetch users when the component loads and to fetch the existing users and initializes the custom cursor
+    this.fetchCountries(); // Fetch countries when the component loads
     this.initializeCursor();
+    this.setSelectedCountry("United States"); 
   }
 
   initializeCursor() {
@@ -105,6 +109,15 @@ export class Registration extends LitElement {
     });
   }
 
+  getSelectedCountries() {
+    return this.selectedCountry;
+  }
+
+  setSelectedCountry(selectedCountry: string) {
+    this.selectedCountry = selectedCountry;
+  }
+
+
   async fetchUsers() {
     try {
       const response = await fetch("http://localhost:3001/register");
@@ -119,6 +132,33 @@ export class Registration extends LitElement {
       this.showAlert = true;
     }
   }
+  async fetchCountries() {
+    try {
+      const response = await fetch("http://localhost:3001/countries");
+      if (!response.ok) {
+        throw new Error("Failed to fetch countries");
+      }
+      this.items = await response.json();  // Use await directly here
+      console.log(this.items);
+  
+      // Set default selected country if the list has data
+      this.setdefaultcountry()
+    
+    } catch (error) {
+      console.error("Error fetching countries:", error);
+      this.errorMsg = "Error fetching countries";
+      this.notifyTheme = "error";
+      this.showAlert = true;
+    }
+  }
+
+  setdefaultcountry(){
+    if (this.items.length > 0) {
+      this.selectedCountry = this.items[0];  // Set the first country as the default
+    }
+  }
+  
+  
 
   async handleSubmit(e: Event) {
     e.preventDefault();
@@ -130,7 +170,7 @@ export class Registration extends LitElement {
       password: this.password,
       dob: this.dob,
       phone: this.phone,
-      countries: this.selectedCountry,
+      countries: this.selectedCountry, 
     };
 
     try {
@@ -155,7 +195,7 @@ export class Registration extends LitElement {
         this.password = "";
         this.dob = "";
         this.phone = "";
-        this.selectedCountry = [];
+        this.setSelectedCountry(""); 
 
         // Refresh user data
         this.fetchUsers();
@@ -182,10 +222,10 @@ export class Registration extends LitElement {
       password: this.password,
       dob: this.dob,
       phone: this.phone,
-      countries: this.selectedCountry,
+      countries: this.getSelectedCountries(), // Using getter to retrieve selected countries
     };
-debugger
-    console.log(userdata)
+    debugger;
+    console.log(userdata);
     try {
       const response = await fetch(
         `http://localhost:3001/register/${this.editedId}`,
@@ -211,7 +251,7 @@ debugger
         this.password = "";
         this.dob = "";
         this.phone = "";
-        this.selectedCountry = [];
+        this.setSelectedCountry(""); // Clear the selected countries
 
         this.editBtnClicked = false;
         // Refresh user data
@@ -236,11 +276,11 @@ debugger
     this.password = item.password;
     const dob = item.dob;
     this.phone = item.phone;
-    this.selectedCountry = item.countries;
+    this.setSelectedCountry(item.countries);
     this.dob = dob.split("T")[0];
     this.editedId = item.id;
     this.editBtnClicked = true;
-    // Store the selected user data for later updating
+    
   };
 
   viewHandler = (item: any) => {
@@ -251,10 +291,10 @@ debugger
 
   deleteHandler = async (item: any) => {
     console.log(item);
-    const userId = item.id; // Assuming each user has a unique id
+    const userId = item.id; 
 
     try {
-      // Send DELETE request to the backend API
+      
       const response = await fetch(`http://localhost:3001/register/${userId}`, {
         method: "DELETE",
       });
@@ -408,18 +448,16 @@ debugger
           required
         ></vaadin-text-field>
 
-        <vaadin-multi-select-combo-box
-          label="Countries"
+        <vaadin-combo-box
+          label="Country"
           .items="${this.items}"
-          .selectedItems="${this.selectedCountry}"
-          @selected-items-changed="${(e: any) =>
-            (this.selectedCountry = e.detail.value)}"
-        ></vaadin-multi-select-combo-box>
+          .value="${this.selectedCountry}"
+          @value-changed="${(e: any) => this.selectedCountry = e.target.value}"
+        ></vaadin-combo-box>
 
         <vaadin-button
           @click="${(e: Event) => {
-            this.editBtnClicked ?
-            this.handleUpdate(e) : this.handleSubmit(e)  ;
+            this.editBtnClicked ? this.handleUpdate(e) : this.handleSubmit(e);
           }}"
           >${this.editBtnClicked ? "Update" : "Register"}</vaadin-button
         >
